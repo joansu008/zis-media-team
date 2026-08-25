@@ -1,0 +1,13 @@
+{
+  "workflow_id": "topic_to_script",
+  "version": "1.0.0",
+  "trigger": "A topic/idea request without source long-form media",
+  "steps": [
+    {"id": "intake", "owner": "manager", "next": "content"},
+    {"id": "content", "owner": "content_agent", "output": "handoffs/content_to_review.json", "next": "review"},
+    {"id": "review", "owner": "review_agent", "on_pass": "awaiting_video", "on_fail": "revision"},
+    {"id": "revision", "owner_from_review": true, "max_attempts": 2, "next": "review", "on_exhausted": "needs_human_review"}
+  ],
+  "terminal_without_video": "awaiting_video"
+}
+

@@ -1,0 +1,38 @@
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+
+# Local task production data (only the placeholder is versioned)
+workspace/*
+!workspace/.gitkeep
+
+# Media, exports, caches and local binaries
+media/
+assets/local/
+exports/
+cache/
+tmp/
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.wav
+*.mp3
+*.srt
+*.vtt
+*.zip
+*.tar
+*.gz
+
+# Machine-local configuration
+config/local.*
+*.local.json
+*.local.yaml
+

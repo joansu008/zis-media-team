@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design brief (interface only)",
+  "type": "object",
+  "required": ["task_id", "platform", "content_summary", "deliverable_type"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "platform": {"type": "string"},
+    "content_summary": {"type": "string"},
+    "deliverable_type": {"enum": ["video_cover", "xiaohongshu_cover", "card", "poster", "b_roll"]},
+    "dimensions": {"type": "object"},
+    "brand_constraints": {"type": "array"},
+    "source_assets": {"type": "array"}
+  },
+  "additionalProperties": true
+}
+

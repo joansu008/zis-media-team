@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "task.schema.json",
+  "title": "Media team task",
+  "type": "object",
+  "required": ["task_id", "request", "workflow_id", "platform", "created_at", "inputs"],
+  "properties": {
+    "task_id": {"type": "string", "pattern": "^task_[0-9]{8}_[0-9]{6}_[a-z0-9]{6}$"},
+    "request": {"type": "string", "minLength": 1},
+    "workflow_id": {"enum": ["topic_to_script", "long_video_to_clips"]},
+    "platform": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "inputs": {"type": "object"},
+    "routing": {"type": "object"}
+  },
+  "additionalProperties": true
+}
+

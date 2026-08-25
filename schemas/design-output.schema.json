@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Design result (interface only)",
+  "type": "object",
+  "required": ["task_id", "status", "artifacts"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "status": {"enum": ["available", "capability_unavailable", "failed"]},
+    "artifacts": {"type": "array"},
+    "design_rationale": {"type": "string"},
+    "source_and_rights_notes": {"type": "array"}
+  },
+  "additionalProperties": true
+}
+

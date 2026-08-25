@@ -1,0 +1,2 @@
+"""Structured agent handoffs."""
+

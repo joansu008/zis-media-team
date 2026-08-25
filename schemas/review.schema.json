@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "review.schema.json",
+  "title": "Independent review decision",
+  "type": "object",
+  "required": ["task_id", "review_version", "artifact_type", "review_status", "score", "issues", "owner_agent", "required_action", "need_re_review", "created_at"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "review_version": {"type": "integer", "minimum": 1},
+    "artifact_type": {"type": "string"},
+    "review_status": {"enum": ["PASS", "FAIL"]},
+    "score": {"type": "integer", "minimum": 0, "maximum": 100},
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "message", "severity"],
+        "properties": {
+          "code": {"type": "string"},
+          "message": {"type": "string"},
+          "severity": {"enum": ["low", "medium", "high"]}
+        }
+      }
+    },
+    "owner_agent": {"type": "string"},
+    "required_action": {"type": "string"},
+    "need_re_review": {"type": "boolean"},
+    "created_at": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": true
+}
+

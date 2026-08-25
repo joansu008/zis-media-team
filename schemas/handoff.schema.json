@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "handoff.schema.json",
+  "title": "Agent handoff",
+  "type": "object",
+  "required": ["task_id", "source_agent", "target_agent", "artifact_type", "created_at", "payload"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "source_agent": {"enum": ["manager", "content_agent", "video_agent", "design_agent", "review_agent"]},
+    "target_agent": {"enum": ["manager", "content_agent", "video_agent", "design_agent", "review_agent"]},
+    "artifact_type": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "payload": {
+      "type": "object",
+      "properties": {
+        "goal": {"type": "string"},
+        "platform": {"type": "string"},
+        "selected_topic": {"type": "string"},
+        "content_summary": {"type": "string"},
+        "script": {"type": "string"},
+        "title": {"type": "string"},
+        "source_range": {},
+        "constraints": {"type": "array"},
+        "production_requirements": {"type": "object"}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
+

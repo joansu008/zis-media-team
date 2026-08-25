@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "skills": [
+    {
+      "id": "task-routing", "name": "Explicit task routing", "description": "Route natural-language intent to a registered workflow with deterministic rules", "owner_agent": "manager", "input": "user request", "output": "workflow id and reason", "platform": ["macOS", "Windows", "Linux"], "requirements": ["Python >=3.9"], "status": "available", "path": "src/routing/router.py", "version": "1.0.0", "tested": true
+    },
+    {
+      "id": "task-state", "name": "File task state", "description": "Create isolated task workspaces and validate state transitions", "owner_agent": "manager", "input": "task and transition", "output": "task.json/state.json/history", "platform": ["macOS", "Windows", "Linux"], "requirements": ["Python >=3.9"], "status": "available", "path": "src/state/store.py", "version": "1.0.0", "tested": true
+    },
+    {
+      "id": "revision-loop", "name": "Bounded revision loop", "description": "Create owner-specific revision requests and stop after two automatic attempts", "owner_agent": "manager", "input": "FAIL review", "output": "revision request or human escalation", "platform": ["macOS", "Windows", "Linux"], "requirements": ["task-state"], "status": "available", "path": "src/manager/runtime.py", "version": "1.0.0", "tested": true
+    },
+    {
+      "id": "capability-detection", "name": "Local capability detection", "description": "Detect OS, Python, Git, FFmpeg and external workflow configuration", "owner_agent": "manager", "input": "local environment", "output": "capability report", "platform": ["macOS", "Windows", "Linux"], "requirements": ["Python >=3.9"], "status": "available", "path": "src/capabilities.py", "version": "1.0.0", "tested": true
+    },
+    {
+      "id": "topic-to-script", "name": "Topic to short-video script", "description": "Build a structured first-pass spoken script, title and post copy", "owner_agent": "content_agent", "input": "topic request", "output": "content handoff", "platform": ["macOS", "Windows", "Linux"], "requirements": ["Python >=3.9"], "status": "available", "path": "src/content/service.py", "version": "1.0.0", "tested": true
+    },
+    {
+      "id": "long-video-content-analysis", "name": "Long-video content analysis", "description": "Analyze transcript/source ranges and select clip candidates", "owner_agent": "content_agent", "input": "source media or transcript", "output": "ranked candidates with source ranges", "platform": ["macOS", "Windows", "Linux"], "requirements": ["transcript or configured external workflow"], "status": "unavailable", "path": "agents/content.md", "version": "0.1.0", "tested": false
+    },
+    {
+      "id": "zis-video-workflow-adapter", "name": "zis-video-workflow adapter", "description": "Probe and invoke an explicitly configured sibling CLI without modifying it", "owner_agent": "video_agent", "input": "source path and content handoff", "output": "external output manifest", "platform": ["macOS", "Windows", "Linux"], "requirements": ["ZIS_VIDEO_WORKFLOW_PATH", "ZIS_VIDEO_WORKFLOW_COMMAND"], "status": "experimental", "path": "adapters/zis_video_workflow", "version": "1.0.0", "tested": true
+    },
+    {
+      "id": "content-review", "name": "Independent content review", "description": "Check completeness, relevance, opening, logic, title match and unsupported claims", "owner_agent": "review_agent", "input": "task and content handoff", "output": "structured PASS/FAIL", "platform": ["macOS", "Windows", "Linux"], "requirements": ["Python >=3.9"], "status": "available", "path": "src/review/engine.py", "version": "1.0.0", "tested": true
+    },
+    {
+      "id": "video-technical-check", "name": "Video technical check", "description": "Validate output file, timeline ordering, duplicates and subtitle requirement", "owner_agent": "review_agent", "input": "video handoff", "output": "structured PASS/FAIL", "platform": ["macOS", "Windows", "Linux"], "requirements": ["generated media"], "status": "experimental", "path": "src/review/engine.py", "version": "1.0.0", "tested": true
+    },
+    {
+      "id": "design-contract", "name": "Design handoff contract", "description": "Defines visual task inputs and outputs; no image generation in v1", "owner_agent": "design_agent", "input": "visual brief", "output": "design handoff contract", "platform": ["macOS", "Windows", "Linux"], "requirements": [], "status": "unavailable", "path": "agents/design.md", "version": "0.1.0", "tested": false
+    }
+  ]
+}
+

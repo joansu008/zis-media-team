@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "state.schema.json",
+  "title": "Task state",
+  "type": "object",
+  "required": ["task_id", "status", "current_stage", "revision_counts", "history", "updated_at"],
+  "properties": {
+    "task_id": {"type": "string"},
+    "status": {
+      "enum": ["created", "analyzing", "content_processing", "awaiting_confirmation", "awaiting_video", "video_processing", "design_processing", "reviewing", "revision_required", "needs_human_review", "approved", "completed", "failed", "cancelled"]
+    },
+    "current_stage": {"type": "string"},
+    "revision_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+    "history": {"type": "array", "items": {"type": "object"}},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "last_summary": {"type": "string"}
+  },
+  "additionalProperties": true
+}
+

@@ -1,0 +1,13 @@
+{
+  "workflow_id": "long_video_to_clips",
+  "version": "1.0.0",
+  "trigger": "A request to find or produce clips from long-form media",
+  "steps": [
+    {"id": "intake", "owner": "manager", "requires": ["source_media"], "if_missing": "awaiting_video"},
+    {"id": "content_analysis", "owner": "content_agent", "output": "handoffs/content_to_video.json"},
+    {"id": "video", "owner": "video_agent", "skill": "zis-video-workflow-adapter", "output": "handoffs/video_to_review.json", "if_unavailable": "needs_human_review"},
+    {"id": "review", "owner": "review_agent", "on_pass": "completed", "on_fail": "revision"},
+    {"id": "revision", "owner_from_review": true, "max_attempts": 2, "next": "review", "on_exhausted": "needs_human_review"}
+  ]
+}
+

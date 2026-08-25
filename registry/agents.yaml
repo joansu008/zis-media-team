@@ -1,0 +1,56 @@
+{
+  "version": "1.0.0",
+  "agents": [
+    {
+      "agent_id": "manager",
+      "responsibility": "Intake, routing, orchestration, state, review handling and final reporting",
+      "available_skills": ["task-routing", "task-state", "revision-loop", "capability-detection"],
+      "allowed_tools": ["project_files", "python_runtime", "codex_subagents"],
+      "required_context": ["task", "state", "workflow", "agent_registry", "previous_summary", "review_decision"],
+      "output_schema": "schemas/state.schema.json",
+      "review_owner": "review_agent",
+      "status": "available"
+    },
+    {
+      "agent_id": "content_agent",
+      "responsibility": "Content analysis, extraction, topic, structure, scripts, titles and content revisions",
+      "available_skills": ["topic-to-script", "long-video-content-analysis"],
+      "allowed_tools": ["project_files", "source_transcripts", "temporary_subagents"],
+      "required_context": ["task", "content_inputs", "rules/content.md"],
+      "output_schema": "schemas/handoff.schema.json",
+      "review_owner": "review_agent",
+      "status": "available"
+    },
+    {
+      "agent_id": "video_agent",
+      "responsibility": "Timeline, clipping, subtitles and external video workflow orchestration",
+      "available_skills": ["zis-video-workflow-adapter", "video-technical-check"],
+      "allowed_tools": ["ffmpeg", "configured_external_cli", "project_files"],
+      "required_context": ["task", "source_media", "content_to_video_handoff", "rules/video.md", "adapter_config"],
+      "output_schema": "schemas/handoff.schema.json",
+      "review_owner": "review_agent",
+      "status": "experimental"
+    },
+    {
+      "agent_id": "design_agent",
+      "responsibility": "Covers, cards, posters, visual packaging and brand consistency",
+      "available_skills": ["design-contract"],
+      "allowed_tools": ["project_files"],
+      "required_context": ["task", "visual_inputs", "content_summary", "rules/design.md"],
+      "output_schema": "schemas/handoff.schema.json",
+      "review_owner": "review_agent",
+      "status": "unavailable"
+    },
+    {
+      "agent_id": "review_agent",
+      "responsibility": "Independent content and video acceptance review",
+      "available_skills": ["content-review", "video-technical-check"],
+      "allowed_tools": ["project_files", "media_metadata"],
+      "required_context": ["original_goal", "artifact", "rules/review.md", "necessary_source_evidence"],
+      "output_schema": "schemas/review.schema.json",
+      "review_owner": "human",
+      "status": "available"
+    }
+  ]
+}
+
