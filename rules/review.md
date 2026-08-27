@@ -6,3 +6,4 @@ Video review checks source range validity, timeline order, accidental duplicatio
 
 Return structured JSON. FAIL must set `need_re_review: true`, identify `owner_agent`, and state a testable required action. PASS must set `need_re_review: false`. The Manager permits at most two automatic revisions per stage, then escalates to `needs_human_review`.
 
+For AI content review, PASS additionally requires score >= 80, no high-severity issue, a clear hook and central claim, specific rather than generic guidance, coherent logic, true title-content fit, and a script worth producing. Each issue must cite artifact evidence and a specific fix.

@@ -3,11 +3,12 @@
 ## `topic_to_script`
 
 1. Manager creates the task and records the explicit route.
-2. Content Agent produces topic, summary, structure, spoken script, title, post copy, constraints, and production requirements.
-3. Review Agent independently evaluates it and writes `review_vN.json`.
-4. FAIL creates an owner-specific revision request and re-enters Content; PASS becomes `approved` and then `awaiting_video` because no source video was supplied.
+2. In the default native mode, Python returns a Content `next_action`; the Codex Lead dispatches a bounded Content subagent and submits its strict JSON.
+3. The runtime validates the Content schema, persists the handoff, and runs deterministic gates before returning a separate Review `next_action`.
+4. An isolated Review subagent reads only the original goal, artifact, Review role/rules and schema. Python validates and fuses its decision into `review_vN.json`.
+5. FAIL creates an owner-specific revision request and a state-driven Content revision action. The revised artifact is gated and independently reviewed again. PASS becomes `approved` and then `awaiting_video`.
 
-The v1 deterministic script is a working baseline, not a claim that template text replaces editorial judgment. In normal Codex use, the Content role can refine the structured payload before review.
+Native JSON/schema failures are rejected without a handoff or hidden fallback. API provider/credential failures stop truthfully. The deterministic content service runs only through explicit offline mode and records `execution_mode=deterministic`.
 
 ## `long_video_to_clips`
 
@@ -18,4 +19,3 @@ The v1 deterministic script is a working baseline, not a claim that template tex
 5. Review PASS completes the workflow; FAIL names the responsible Agent.
 
 Long-video semantic analysis remains unavailable on this machine until the external workflow or a transcript is configured. The runtime does not fabricate candidates or exports.
-

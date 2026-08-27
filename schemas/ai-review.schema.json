@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ai-review.schema.json",
+  "title": "AI content review decision",
+  "type": "object",
+  "required": [
+    "review_status",
+    "score",
+    "issues",
+    "owner_agent",
+    "required_action",
+    "need_re_review"
+  ],
+  "properties": {
+    "review_status": {"enum": ["PASS", "FAIL"]},
+    "score": {"type": "integer", "minimum": 0, "maximum": 100},
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "category", "severity", "message", "evidence", "suggested_fix"],
+        "properties": {
+          "code": {"type": "string", "minLength": 1},
+          "category": {"type": "string", "minLength": 1},
+          "severity": {"enum": ["low", "medium", "high"]},
+          "message": {"type": "string", "minLength": 1},
+          "evidence": {"type": "string"},
+          "suggested_fix": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "owner_agent": {"enum": ["", "content_agent"]},
+    "required_action": {"type": "string"},
+    "need_re_review": {"type": "boolean"}
+  },
+  "additionalProperties": false
+}

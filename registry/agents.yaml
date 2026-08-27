@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "agents": [
     {
       "agent_id": "manager",
@@ -14,7 +14,7 @@
     {
       "agent_id": "content_agent",
       "responsibility": "Content analysis, extraction, topic, structure, scripts, titles and content revisions",
-      "available_skills": ["topic-to-script", "long-video-content-analysis"],
+      "available_skills": ["model-backed-content", "topic-to-script", "long-video-content-analysis"],
       "allowed_tools": ["project_files", "source_transcripts", "temporary_subagents"],
       "required_context": ["task", "content_inputs", "rules/content.md"],
       "output_schema": "schemas/handoff.schema.json",
@@ -44,7 +44,7 @@
     {
       "agent_id": "review_agent",
       "responsibility": "Independent content and video acceptance review",
-      "available_skills": ["content-review", "video-technical-check"],
+      "available_skills": ["content-review", "ai-content-review", "video-technical-check"],
       "allowed_tools": ["project_files", "media_metadata"],
       "required_context": ["original_goal", "artifact", "rules/review.md", "necessary_source_evidence"],
       "output_schema": "schemas/review.schema.json",
@@ -53,4 +53,3 @@
     }
   ]
 }
-

@@ -21,11 +21,13 @@
         "title": {"type": "string"},
         "source_range": {},
         "constraints": {"type": "array"},
-        "production_requirements": {"type": "object"}
+        "production_requirements": {"type": "object"},
+        "revision_attempt": {"type": "integer", "minimum": 0, "maximum": 2},
+        "addressed_issues": {"type": "array", "items": {"type": "string"}},
+        "execution_mode": {"enum": ["codex_native", "api", "deterministic"]}
       },
       "additionalProperties": true
     }
   },
   "additionalProperties": false
 }
-

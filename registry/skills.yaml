@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "2.0.0",
   "skills": [
     {
       "id": "task-routing", "name": "Explicit task routing", "description": "Route natural-language intent to a registered workflow with deterministic rules", "owner_agent": "manager", "input": "user request", "output": "workflow id and reason", "platform": ["macOS", "Windows", "Linux"], "requirements": ["Python >=3.9"], "status": "available", "path": "src/routing/router.py", "version": "1.0.0", "tested": true
@@ -14,7 +14,7 @@
       "id": "capability-detection", "name": "Local capability detection", "description": "Detect OS, Python, Git, FFmpeg and external workflow configuration", "owner_agent": "manager", "input": "local environment", "output": "capability report", "platform": ["macOS", "Windows", "Linux"], "requirements": ["Python >=3.9"], "status": "available", "path": "src/capabilities.py", "version": "1.0.0", "tested": true
     },
     {
-      "id": "topic-to-script", "name": "Topic to short-video script", "description": "Build a structured first-pass spoken script, title and post copy", "owner_agent": "content_agent", "input": "topic request", "output": "content handoff", "platform": ["macOS", "Windows", "Linux"], "requirements": ["Python >=3.9"], "status": "available", "path": "src/content/service.py", "version": "1.0.0", "tested": true
+      "id": "topic-to-script", "name": "Topic to short-video script", "description": "Build a structured first-pass spoken script, title and post copy", "owner_agent": "content_agent", "input": "topic request", "output": "content handoff", "platform": ["macOS", "Windows", "Linux"], "requirements": ["configured ModelProvider"], "status": "available", "path": "src/content/agent.py", "version": "2.0.0", "tested": true
     },
     {
       "id": "long-video-content-analysis", "name": "Long-video content analysis", "description": "Analyze transcript/source ranges and select clip candidates", "owner_agent": "content_agent", "input": "source media or transcript", "output": "ranked candidates with source ranges", "platform": ["macOS", "Windows", "Linux"], "requirements": ["transcript or configured external workflow"], "status": "unavailable", "path": "agents/content.md", "version": "0.1.0", "tested": false
@@ -30,7 +30,12 @@
     },
     {
       "id": "design-contract", "name": "Design handoff contract", "description": "Defines visual task inputs and outputs; no image generation in v1", "owner_agent": "design_agent", "input": "visual brief", "output": "design handoff contract", "platform": ["macOS", "Windows", "Linux"], "requirements": [], "status": "unavailable", "path": "agents/design.md", "version": "0.1.0", "tested": false
+    },
+    {
+      "id": "model-backed-content", "name": "Model-backed content creation and revision", "description": "Call a replaceable provider, validate strict JSON, and produce topic-specific content artifacts", "owner_agent": "content_agent", "input": "task goal and limited content context", "output": "schema-valid content artifact", "platform": ["macOS", "Windows", "Linux"], "requirements": ["ZIS_MODEL_PROVIDER", "ZIS_CONTENT_MODEL", "provider credential"], "status": "available", "path": "src/content/agent.py", "version": "2.0.0", "tested": true
+    },
+    {
+      "id": "ai-content-review", "name": "Independent AI editorial review", "description": "Judge hook, specificity, density, logic, title fit and production worthiness independently of deterministic gates", "owner_agent": "review_agent", "input": "original task, content artifact and review rules", "output": "structured editorial PASS/FAIL", "platform": ["macOS", "Windows", "Linux"], "requirements": ["ZIS_MODEL_PROVIDER", "ZIS_REVIEW_MODEL", "provider credential"], "status": "available", "path": "src/review/agent.py", "version": "2.0.0", "tested": true
     }
   ]
 }
-

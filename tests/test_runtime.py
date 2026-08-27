@@ -24,7 +24,9 @@ class RuntimeTest(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.workspace = Path(self.temporary.name) / "workspace"
-        self.runtime = ManagerRuntime(root=ROOT, workspace=self.workspace)
+        self.runtime = ManagerRuntime(
+            root=ROOT, workspace=self.workspace, execution_mode="deterministic"
+        )
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -85,7 +87,7 @@ class RuntimeTest(unittest.TestCase):
 
     def test_04_core_runtime_has_no_machine_specific_absolute_paths(self) -> None:
         mac_pattern = re.compile(r"/Users/[^/]+/")
-        windows_pattern = re.compile(r"[A-Za-z]:[\\/]")
+        windows_pattern = re.compile(r"(?<![A-Za-z])[A-Za-z]:[\\/]")
         violations = []
         for path in (ROOT / "src").rglob("*.py"):
             text = path.read_text(encoding="utf-8")
@@ -159,7 +161,15 @@ class RuntimeTest(unittest.TestCase):
                     "content_summary": "",
                 }
 
-            def revise(self, request: str, platform: str, previous: dict, issues: list) -> dict:
+            def revise(
+                self,
+                request: str,
+                platform: str,
+                previous: dict,
+                issues: list,
+                required_action: str = "",
+                revision_attempt: int = 1,
+            ) -> dict:
                 return self.topic_to_script(request, platform)
 
         self.runtime.content = AlwaysBadContent()

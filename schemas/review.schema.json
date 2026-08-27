@@ -17,8 +17,11 @@
         "required": ["code", "message", "severity"],
         "properties": {
           "code": {"type": "string"},
+          "category": {"type": "string"},
           "message": {"type": "string"},
-          "severity": {"enum": ["low", "medium", "high"]}
+          "severity": {"enum": ["low", "medium", "high"]},
+          "evidence": {"type": "string"},
+          "suggested_fix": {"type": "string"}
         }
       }
     },
@@ -29,4 +32,3 @@
   },
   "additionalProperties": true
 }
-

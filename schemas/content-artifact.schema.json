@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "content-artifact.schema.json",
+  "title": "Model-backed content artifact",
+  "type": "object",
+  "required": [
+    "goal",
+    "platform",
+    "selected_topic",
+    "content_summary",
+    "structure",
+    "script",
+    "title",
+    "post_copy",
+    "source_range",
+    "constraints",
+    "production_requirements",
+    "revision_attempt",
+    "addressed_issues",
+    "execution_mode"
+  ],
+  "properties": {
+    "goal": {"type": "string", "minLength": 1},
+    "platform": {"type": "string", "minLength": 1},
+    "selected_topic": {"type": "string", "minLength": 1},
+    "content_summary": {"type": "string", "minLength": 1},
+    "structure": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["section", "purpose", "text"],
+        "properties": {
+          "section": {"type": "string", "minLength": 1},
+          "purpose": {"type": "string", "minLength": 1},
+          "text": {"type": "string", "minLength": 1}
+        },
+        "additionalProperties": false
+      }
+    },
+    "script": {"type": "string", "minLength": 100},
+    "title": {"type": "string", "minLength": 1},
+    "post_copy": {"type": "string", "minLength": 1},
+    "source_range": {
+      "anyOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "required": ["start", "end"],
+          "properties": {
+            "start": {"type": "number", "minimum": 0},
+            "end": {"type": "number", "minimum": 0}
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "constraints": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "production_requirements": {
+      "type": "object",
+      "required": ["target_duration_seconds", "needs_source_video", "caption_language"],
+      "properties": {
+        "target_duration_seconds": {"type": "integer", "minimum": 1},
+        "needs_source_video": {"type": "boolean"},
+        "caption_language": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "revision_attempt": {"type": "integer", "minimum": 0, "maximum": 2},
+    "addressed_issues": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "execution_mode": {"enum": ["codex_native", "api", "deterministic"]}
+  },
+  "additionalProperties": false
+}

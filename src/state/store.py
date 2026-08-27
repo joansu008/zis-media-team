@@ -75,6 +75,7 @@ class TaskStore:
         platform: str,
         inputs: dict[str, Any],
         routing: dict[str, Any],
+        execution_mode: str = "deterministic",
     ) -> tuple[str, Path]:
         now = datetime.now(timezone.utc)
         task_id = f"task_{now:%Y%m%d}_{now:%H%M%S}_{secrets.token_hex(3)}"
@@ -91,6 +92,7 @@ class TaskStore:
             "created_at": created_at,
             "inputs": inputs,
             "routing": routing,
+            "execution_mode": execution_mode,
         }
         state = {
             "task_id": task_id,

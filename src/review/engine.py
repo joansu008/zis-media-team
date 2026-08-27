@@ -6,8 +6,23 @@ from typing import Any
 from src.io import utc_now
 
 
-def _issue(code: str, message: str, severity: str) -> dict[str, str]:
-    return {"code": code, "message": message, "severity": severity}
+def _issue(
+    code: str,
+    message: str,
+    severity: str,
+    *,
+    category: str = "deterministic_gate",
+    evidence: str = "",
+    suggested_fix: str = "",
+) -> dict[str, str]:
+    return {
+        "code": code,
+        "category": category,
+        "message": message,
+        "severity": severity,
+        "evidence": evidence,
+        "suggested_fix": suggested_fix or message,
+    }
 
 
 class ReviewEngine:
@@ -35,10 +50,6 @@ class ReviewEngine:
             issues.append(_issue("script_too_thin", "口播稿过短，无法完整支撑任务目标。", "high"))
         if not summary:
             issues.append(_issue("missing_summary", "缺少内容摘要。", "medium"))
-        if topic and title and topic.lower() not in title.lower():
-            issues.append(_issue("title_topic_mismatch", "标题没有覆盖选定主题。", "high"))
-        if script and not any(marker in script for marker in ("？", "?", "第一", "先")):
-            issues.append(_issue("weak_opening", "开头未快速建立问题或相关性。", "medium"))
         found_absolutes = [term for term in self.UNSUPPORTED_ABSOLUTES if term in script]
         if found_absolutes:
             issues.append(
@@ -66,6 +77,84 @@ class ReviewEngine:
             "reviewed_against": {
                 "request": task["request"],
                 "workflow_id": task["workflow_id"],
+            },
+            "execution_mode": "deterministic",
+            "review_layers": {"deterministic_gates": "PASS" if passed else "FAIL"},
+        }
+
+    def fuse_content_reviews(
+        self,
+        task: dict[str, Any],
+        deterministic: dict[str, Any],
+        ai_review: dict[str, Any],
+        review_version: int,
+        execution_mode: str = "api",
+    ) -> dict[str, Any]:
+        issues = list(deterministic["issues"]) + list(ai_review["issues"])
+        ai_claims_pass = ai_review["review_status"] == "PASS"
+        ai_has_high_issue = any(
+            item["severity"] == "high" for item in ai_review["issues"]
+        )
+        if ai_claims_pass and (
+            ai_review["score"] < 80
+            or ai_has_high_issue
+            or ai_review["need_re_review"]
+        ):
+            issues.append(
+                _issue(
+                    "ai_review_inconsistent",
+                    "AI审核结论与分数、问题严重度或复审标记不一致。",
+                    "high",
+                    category="review_integrity",
+                    evidence=f"status={ai_review['review_status']}, score={ai_review['score']}, need_re_review={ai_review['need_re_review']}",
+                    suggested_fix="按PASS门槛重新给出一致、可执行的审核结论。",
+                )
+            )
+        if ai_review["review_status"] == "FAIL" and not ai_review["issues"]:
+            issues.append(
+                _issue(
+                    "ai_review_missing_issue",
+                    "AI审核判定FAIL但没有提供问题证据。",
+                    "high",
+                    category="review_integrity",
+                    suggested_fix="给出至少一个带证据和修复建议的问题。",
+                )
+            )
+        passed = (
+            deterministic["review_status"] == "PASS"
+            and ai_claims_pass
+            and ai_review["score"] >= 80
+            and not ai_review["need_re_review"]
+            and not any(item["severity"] == "high" for item in issues)
+        )
+        required_actions = []
+        if deterministic.get("required_action"):
+            required_actions.append(deterministic["required_action"])
+        if ai_review.get("required_action"):
+            required_actions.append(ai_review["required_action"])
+        if not passed and not required_actions:
+            required_actions.extend(
+                item.get("suggested_fix") or item["message"] for item in issues
+            )
+        return {
+            "task_id": task["task_id"],
+            "review_version": review_version,
+            "artifact_type": "content_package",
+            "review_status": "PASS" if passed else "FAIL",
+            "score": min(deterministic["score"], ai_review["score"]),
+            "issues": issues,
+            "owner_agent": "" if passed else "content_agent",
+            "required_action": "；".join(required_actions),
+            "need_re_review": not passed,
+            "created_at": utc_now(),
+            "reviewed_against": {
+                "request": task["request"],
+                "workflow_id": task["workflow_id"],
+            },
+            "execution_mode": execution_mode,
+            "review_layers": {
+                "deterministic_gates": deterministic["review_status"],
+                "ai_review": ai_review["review_status"],
             },
         }
 
@@ -120,4 +209,3 @@ class ReviewEngine:
             "need_re_review": not passed,
             "created_at": utc_now(),
         }
-
